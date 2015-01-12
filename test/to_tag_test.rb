@@ -8,6 +8,7 @@ class ToTagTest < Test::Unit::TestCase
   def test_to_tag
     assert_equal "", ",.;&=?*+!'\"()|-".to_tag
     assert_equal "test", " test ".to_tag
+    assert_equal "äöü", "ÄÖÜ".to_tags
   end 
 
   def test_to_tags
@@ -26,11 +27,10 @@ class ToTagTest < Test::Unit::TestCase
 
   def test_to_ascii_tag
     assert_equal "aeoeue", "ÄÖÜ".to_ascii_tag
-    assert_equal "aeoeue", "ÄÖÜ".to_tag
   end
 
-  def test_to_unicode_tag
-    assert_equal "äöü", "ÄÖÜ".to_unicode_tag
+  def test_to_ascii_tags
+    assert_equal "aeoeue aeoeue", "ÄÖÜ ÄÖÜ".to_ascii_tags
   end
 end
 

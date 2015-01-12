@@ -1,21 +1,19 @@
 
 require "to_tag/version"
 require "rubygems"
-require "to_ascii"
 require "unicode"
+require "to_ascii"
 
 class Object
-  def to_unicode_tag
+  def to_tag
     Unicode.downcase(to_s).gsub(/[,.;&=?*+!'"()|-]/, " ").gsub(/\s+/, " ").strip
   end
 
   def to_ascii_tag
-    to_s.to_ascii.to_unicode_tag
+    to_s.to_ascii.to_tag
   end
 
-  alias :to_tag :to_ascii_tag
-
-  def to_unicode_tags
+  def to_tags
     res = Unicode.downcase(to_s).gsub(/[,.;&=?*+!']/, " ")
 
     2.times do
@@ -23,12 +21,10 @@ class Object
     end 
 
     res.gsub(/\s+/, " ").strip
-  end 
-
-  def to_ascii_tags
-    to_s.to_ascii.to_unicode_tags
   end
 
-  alias :to_tags :to_ascii_tags
+  def to_ascii_tags
+    to_s.to_ascii.to_tags
+  end
 end
 
