@@ -1,34 +1,34 @@
+
 require "to_tag/version"
 require "rubygems"
 require "to_ascii"
-
-# transform words into tags and multiple words (with operators, possibly)
-# into multiple tags without loosing the operators
-
-# operators: -word, "word", word1 | word2, (word1 | word2) word3
+require "unicode"
 
 class Object
-  # transform word into tag
-  # remove special characters and operators
+  def to_unicode_tag
+    Unicode.downcase(to_s).gsub(/[,.;&=?*+!'"()|-]/, " ").gsub(/\s+/, " ").strip
+  end
 
-  def to_tag
-    to_s.to_ascii.downcase.gsub(/[,.;&=?*+!'"()|-]/, " ").gsub(/\s+/, " ").strip
-  end 
+  def to_ascii_tag
+    to_s.to_ascii.to_unicode_tag
+  end
 
-  # transform words into tags, but keep operators
+  alias :to_tag :to_ascii_tag
 
-  def to_tags
-    res = to_s.to_ascii.downcase.gsub(/[,.;&=?*+!']/, " ")
-
-    # remove hyphens connecting words, but keep if used as operator
+  def to_unicode_tags
+    res = Unicode.downcase(to_s).gsub(/[,.;&=?*+!']/, " ")
 
     2.times do
       res.gsub!(/[^\s()|-]-[^\s()|-]/) { |s| s.gsub(/-/, " ") }
     end 
 
-    # remove unwanded whitespace
-
     res.gsub(/\s+/, " ").strip
   end 
+
+  def to_ascii_tags
+    to_s.to_ascii.to_unicode_tags
+  end
+
+  alias :to_tags :to_ascii_tags
 end
 
